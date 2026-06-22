@@ -8,6 +8,16 @@
   <p style="font-family:sans-serif; text-align:center; margin-top:40px;">
     LekhaVigya app mein redirect ho raha hai...
   </p>
+
+  <script>
+    // 404 se aaya hua path restore karo
+    const saved = sessionStorage.getItem('redirect');
+    if (saved) {
+      sessionStorage.removeItem('redirect');
+      history.replaceState(null, '', saved);
+    }
+  </script>
+  
   <script>
     const path = window.location.pathname; // /question/13
     const deepLink = "lekhavigya:/" + path;
