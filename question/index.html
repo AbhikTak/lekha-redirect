@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opening LekhaVigya...</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #f5f5f5;
+    }
+    h2 { color: #333; }
+    p { color: #666; font-size: 14px; }
+    a {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: #8B3A3A;
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h2>📖 LekhaVigya</h2>
+  <p>Opening question in app...</p>
+  <a id="storeLink" href="https://play.google.com/store/apps/details?id=com.lekha_vigya_app">
+    Download LekhaVigya
+  </a>
+
+  <script>
+    // URL: /lekha-redirect/question/13  →  id = "13"
+    const parts = window.location.pathname.split('/');
+    const id = parts[parts.length - 1];
+
+    if (id && id !== 'question') {
+      // App install hai toh yeh open karega
+      window.location.href = `lekhavigya://question/${id}`;
+    }
+
+    // App install nahi hai toh 2.5 sec baad Play Store
+    setTimeout(() => {
+      document.querySelector('p').textContent = 
+        'App not installed. Download LekhaVigya from Play Store 👇';
+    }, 2500);
+  </script>
+</body>
+</html>
