@@ -1,43 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>LekhaVigya</title>
+    <meta charset="UTF-8">
+    <title>LekhaVigya</title>
 </head>
 <body>
-  <p style="font-family:sans-serif; text-align:center; margin-top:40px;">
-    LekhaVigya app mein redirect ho raha hai...
-  </p>
+    <p style="font-family:sans-serif; text-align:center; margin-top:40px;">
+        LekhaVigya app mein redirect ho raha hai...
+    </p>
 
-  <script>
-    // 404 se aaya hua path restore karo
-    const saved = sessionStorage.getItem('redirect');
-    if (saved) {
-      sessionStorage.removeItem('redirect');
-      history.replaceState(null, '', saved);
-    }
-  </script>
-  
-  <script>
-    const path = window.location.pathname; // /question/13
-    const deepLink = "lekhavigya:/" + path;
+    <script>
+        // 404 se aaya hua path restore karo
+        const saved = sessionStorage.getItem('redirect');
+        if (saved) {
+            sessionStorage.removeItem('redirect');
+            history.replaceState(null, '', saved);
+        }
+    </script>
 
-    const ua = navigator.userAgent;
-    const isAndroid = /android/i.test(ua);
-    const isIOS = /iphone|ipad|ipod/i.test(ua);
+    <script>
+        /**
+         * window.location.pathname will be something like:
+         *   /lekha-redirect/question/13
+         *
+         * We strip the GitHub Pages base path "/lekha-redirect" so the
+         * deep-link becomes:
+         *   lekhavigya://question/13          ← matches Route.tsx linking config
+         *   https://abhiktak.github.io/lekha-redirect/question/13  ← HTTPS fallback
+         */
+        const BASE_PATH = '/lekha-redirect';
 
-    const playStore = "https://play.google.com/store/apps/details?id=com.lekhavigya";
-    const appStore  = "https://apps.apple.com/app/id123456789";
+        // Strip the base path prefix to get the "real" path: /question/13
+        const rawPath = window.location.pathname;                        // e.g. /lekha-redirect/question/13
+        const appPath = rawPath.startsWith(BASE_PATH)
+            ? rawPath.slice(BASE_PATH.length)                            // → /question/13
+            : rawPath;
 
-    // App open karne ki koshish
-    window.location.href = deepLink;
+        // Build both link variants
+        const deepLink  = 'lekhavigya:/' + appPath;                     // lekhavigya://question/13
+        const httpsLink = 'https://abhiktak.github.io' + BASE_PATH + appPath; // HTTPS fallback
 
-    // 1.5s baad store pe bhejo agar app nahi khuli
-    setTimeout(() => {
-      if (isAndroid)     window.location.href = playStore;
-      else if (isIOS)    window.location.href = appStore;
-      else               document.body.innerHTML = "<p style='text-align:center;font-family:sans-serif'>Please open this link on your mobile device.</p>";
-    }, 1500);
-  </script>
+        const ua        = navigator.userAgent;
+        const isAndroid = /android/i.test(ua);
+        const isIOS     = /iphone|ipad|ipod/i.test(ua);
+
+        const playStore = 'https://play.google.com/store/apps/details?id=com.lekhavigya';
+        const appStore  = 'https://apps.apple.com/app/id1234567890'; // ← replace with real App Store ID
+
+        // Attempt to open the app via custom scheme
+        window.location.href = deepLink;
+
+        // If the app is not installed, fall back to the store after a short delay
+        setTimeout(() => {
+            if (isAndroid) {
+                window.location.href = playStore;
+            } else if (isIOS) {
+                window.location.href = appStore;
+            } else {
+                // Desktop: show a simple message
+                document.body.innerHTML =
+                    '<p style="font-family:sans-serif;text-align:center;margin-top:40px;">' +
+                    'Please open this link on your mobile device.</p>';
+            }
+        }, 2000);
+    </script>
 </body>
 </html>
