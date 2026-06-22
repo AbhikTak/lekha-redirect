@@ -1,10 +1,39 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.yourapp.package",
-    "sha256_cert_fingerprints": [
-      "AA:BB:CC:DD:..."
-    ]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.lekhavigya",
+      "sha256_cert_fingerprints": [
+        "REPLACE_WITH_YOUR_SHA256_FINGERPRINT"
+      ]
+    }
   }
-}]
+]
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HOW TO GET YOUR SHA-256 FINGERPRINT
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// DEBUG keystore (for testing):
+//   keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey \
+//           -storepass android -keypass android
+//
+// RELEASE keystore (for production / Play Store):
+//   keytool -list -v -keystore your-release-key.jks -alias your-alias
+//
+// Copy the "SHA256:" value (format: AA:BB:CC:...) and paste it above,
+// replacing REPLACE_WITH_YOUR_SHA256_FINGERPRINT.
+//
+// ─────────────────────────────────────────────────────────────────────────────
+// WHERE TO PLACE THIS FILE
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// This file must be publicly reachable at:
+//   https://abhiktak.github.io/.well-known/assetlinks.json
+//
+// In your lekha-redirect GitHub repo, place it at:
+//   .well-known/assetlinks.json
+//
+// GitHub Pages serves the .well-known folder automatically.
+// ─────────────────────────────────────────────────────────────────────────────
