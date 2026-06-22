@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LekhaVigya</title>
+</head>
+<body>
+  <p style="font-family:sans-serif; text-align:center; margin-top:40px;">
+    LekhaVigya app mein redirect ho raha hai...
+  </p>
+  <script>
+    const path = window.location.pathname; // /question/13
+    const deepLink = "lekhavigya:/" + path;
+
+    const ua = navigator.userAgent;
+    const isAndroid = /android/i.test(ua);
+    const isIOS = /iphone|ipad|ipod/i.test(ua);
+
+    const playStore = "https://play.google.com/store/apps/details?id=com.lekhavigya";
+    const appStore  = "https://apps.apple.com/app/id123456789";
+
+    // App open karne ki koshish
+    window.location.href = deepLink;
+
+    // 1.5s baad store pe bhejo agar app nahi khuli
+    setTimeout(() => {
+      if (isAndroid)     window.location.href = playStore;
+      else if (isIOS)    window.location.href = appStore;
+      else               document.body.innerHTML = "<p style='text-align:center;font-family:sans-serif'>Please open this link on your mobile device.</p>";
+    }, 1500);
+  </script>
+</body>
+</html>
